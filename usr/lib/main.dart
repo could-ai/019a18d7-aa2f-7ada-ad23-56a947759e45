@@ -14,7 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'Contador de Puntos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: Colors.black,
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Contador de Puntos'),
