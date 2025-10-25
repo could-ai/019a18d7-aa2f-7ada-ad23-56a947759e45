@@ -37,6 +37,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _points = 0;
+  int _pointsPerSecond = 1;
+  int _upgradeCost = 10;
   Timer? _timer;
 
   @override
@@ -44,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
-        _points++;
+        _points += _pointsPerSecond;
       });
     });
   }
@@ -55,13 +57,19 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  void _upgradePointsPerSecond() {
+    if (_points >= _upgradeCost) {
+      setState(() {
+        _points -= _upgradeCost;
+        _pointsPerSecond++;
+        _upgradeCost = (_upgradeCost * 1.5).round(); // Increase cost for next upgrade
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -76,6 +84,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontSize: 50,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Puntos por segundo: $_pointsPerSecond',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _points >= _upgradeCost ? _upgradePointsPerSecond : null,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+              child: Text('Mejorar (+1 p/s) - Costo: $_upgradeCost'),
             ),
           ],
         ),
